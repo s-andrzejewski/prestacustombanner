@@ -25,9 +25,9 @@
 */
 $sql = array();
 
-$sql[] = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'prestacustombanner` (
-    `id_prestacustombanner` int(11) NOT NULL AUTO_INCREMENT,
-    PRIMARY KEY  (`id_prestacustombanner`)
+$sql[] = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'prestacustommessage` (
+    `id_prestacustommessage` int(11) NOT NULL AUTO_INCREMENT,
+    PRIMARY KEY  (`id_prestacustommessage`)
 ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
 
 foreach ($sql as $query) {

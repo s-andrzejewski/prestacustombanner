@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <module>
-	<name>prestacustombanner</name>
+	<name>prestacustommessage</name>
 	<displayName><![CDATA[Custom banner]]></displayName>
 	<version><![CDATA[1.0.0]]></version>
 	<description><![CDATA[Displays custom banner on homepage.]]></description>

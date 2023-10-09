@@ -28,13 +28,13 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
-class Prestacustombanner extends Module
+class PrestaCustomMessage extends Module
 {
     protected $config_form = false;
 
     public function __construct()
     {
-        $this->name = 'prestacustombanner';
+        $this->name = 'prestacustommessage';
         $this->tab = 'front_office_features';
         $this->version = '1.0.0';
         $this->author = 'Szymon Andrzejewski';
@@ -61,7 +61,10 @@ class Prestacustombanner extends Module
      */
     public function install()
     {
-        Configuration::updateValue('PRESTACUSTOMBANNER_LIVE_MODE', false);
+        // Configuration::updateValue('PRESTACUSTOMBANNER_LIVE_MODE', false);
+        Configuration::updateValue('PRESTACUSTOMBANNER_HEADING', null);
+        Configuration::updateValue('PRESTACUSTOMBANNER_DESCRIPTION', null);
+        Configuration::updateValue('PRESTACUSTOMBANNER_BG_COLOR', null);
 
         return parent::install() &&
             $this->registerHook('header') &&
@@ -71,7 +74,10 @@ class Prestacustombanner extends Module
 
     public function uninstall()
     {
-        Configuration::deleteByName('PRESTACUSTOMBANNER_LIVE_MODE');
+        // Configuration::deleteByName('PRESTACUSTOMBANNER_LIVE_MODE');
+        Configuration::deleteByName('PRESTACUSTOMBANNER_HEADING');
+        Configuration::deleteByName('PRESTACUSTOMBANNER_DESCRIPTION');
+        Configuration::deleteByName('PRESTACUSTOMBANNER_BG_COLOR');
 
         return parent::uninstall();
     }
@@ -84,7 +90,7 @@ class Prestacustombanner extends Module
         /**
          * If values have been submitted in the form, process.
          */
-        if (((bool)Tools::isSubmit('submitPrestacustombannerModule')) == true) {
+        if (((bool)Tools::isSubmit('submitPrestaCustomMessageModule')) == true) {
             $this->postProcess();
         }
 
@@ -109,7 +115,7 @@ class Prestacustombanner extends Module
         $helper->allow_employee_form_lang = Configuration::get('PS_BO_ALLOW_EMPLOYEE_FORM_LANG', 0);
 
         $helper->identifier = $this->identifier;
-        $helper->submit_action = 'submitPrestacustombannerModule';
+        $helper->submit_action = 'submitPrestaCustomMessageModule';
         $helper->currentIndex = $this->context->link->getAdminLink('AdminModules', false)
             .'&configure='.$this->name.'&tab_module='.$this->tab.'&module_name='.$this->name;
         $helper->token = Tools::getAdminTokenLite('AdminModules');
@@ -136,36 +142,57 @@ class Prestacustombanner extends Module
                 ),
                 'input' => array(
                     array(
-                        'type' => 'switch',
-                        'label' => $this->l('Live mode'),
-                        'name' => 'PRESTACUSTOMBANNER_LIVE_MODE',
-                        'is_bool' => true,
-                        'desc' => $this->l('Use this module in live mode'),
-                        'values' => array(
+                        'col' => 2,
+                        'type' => 'text',
+                        // <i class="fa-solid fa-heading"></i>
+                        'prefix' => '<i class="fa-solid fa-heading"></i>',
+                        'desc' => $this->l('Enter a heading text for the message.'),
+                        'name' => 'PRESTACUSTOMBANNER_HEADING',
+                        'label' => $this->l('Heading'),
+                    ),
+                    array(
+                        // 'col' => 8,
+                        'row' => 5,
+                        'type' => 'textarea',
+                        // <i class="fa-solid fa-pen"></i>
+                        'prefix' => '<i class="fa-solid fa-pen"></i>',
+                        'desc' => $this->l('Enter message\'s content.'),
+                        'name' => 'PRESTACUSTOMBANNER_DESCRIPTION',
+                        'label' => $this->l('Description'),
+                        'autoload_rte' => true,
+                    ),
+                    // Select
+                    array(
+                        'type' => 'select',
+                        'label' => $this->l('Choose background color:'),
+                        'name' => 'PRESTACUSTOMBANNER_BG_COLOR',
+                        'required' => true,
+                        'options' => array(
+                        'query' => $id_bg_colors = array(
                             array(
-                                'id' => 'active_on',
-                                'value' => true,
-                                'label' => $this->l('Enabled')
+                                'id_bg_colors' => 1,
+                                'name' => 'transparent',
+                                'value' => null
                             ),
                             array(
-                                'id' => 'active_off',
-                                'value' => false,
-                                'label' => $this->l('Disabled')
-                            )
+                                'id_bg_colors' => 2,
+                                'name' => 'red',
+                                'value' => '#FF0000'
+                            ),
+                            array(
+                                'id_bg_colors' => 3,
+                                'name' => 'yellow',
+                                'value' => '#FFFF00'
+                            ),  
+                            array(
+                                'id_bg_colors' => 4,
+                                'name' => 'green',
+                                'value' => '#0f0'
+                            ),                                        
                         ),
-                    ),
-                    array(
-                        'col' => 3,
-                        'type' => 'text',
-                        'prefix' => '<i class="icon icon-envelope"></i>',
-                        'desc' => $this->l('Enter a valid email address'),
-                        'name' => 'PRESTACUSTOMBANNER_ACCOUNT_EMAIL',
-                        'label' => $this->l('Email'),
-                    ),
-                    array(
-                        'type' => 'password',
-                        'name' => 'PRESTACUSTOMBANNER_ACCOUNT_PASSWORD',
-                        'label' => $this->l('Password'),
+                        'id' => 'id_bg_colors',
+                        'name' => 'name'
+                        )
                     ),
                 ),
                 'submit' => array(
@@ -181,9 +208,9 @@ class Prestacustombanner extends Module
     protected function getConfigFormValues()
     {
         return array(
-            'PRESTACUSTOMBANNER_LIVE_MODE' => Configuration::get('PRESTACUSTOMBANNER_LIVE_MODE', true),
-            'PRESTACUSTOMBANNER_ACCOUNT_EMAIL' => Configuration::get('PRESTACUSTOMBANNER_ACCOUNT_EMAIL', 'contact@prestashop.com'),
-            'PRESTACUSTOMBANNER_ACCOUNT_PASSWORD' => Configuration::get('PRESTACUSTOMBANNER_ACCOUNT_PASSWORD', null),
+            'PRESTACUSTOMBANNER_HEADING' => Configuration::get('PRESTACUSTOMBANNER_HEADING', null),
+            'PRESTACUSTOMBANNER_DESCRIPTION' => Configuration::get('PRESTACUSTOMBANNER_DESCRIPTION', null),
+            'PRESTACUSTOMBANNER_BG_COLOR' => Configuration::get('PRESTACUSTOMBANNER_BG_COLOR', null),
         );
     }
 
@@ -221,6 +248,36 @@ class Prestacustombanner extends Module
 
     public function hookDisplayHome()
     {
-        /* Place your code here. */
+        $render = false;
+        $heading = Configuration::get('PRESTACUSTOMBANNER_HEADING');
+        $desc = Configuration::get('PRESTACUSTOMBANNER_DESCRIPTION');
+        $background_color = Configuration::get('PRESTACUSTOMBANNER_BG_COLOR');
+
+        if (!empty($heading)) {
+            $this->context->smarty->assign('prestacustommessage_heading', $heading);
+            $render = true;
+        }
+        
+        if (!empty($desc)) {
+            $this->context->smarty->assign('prestacustommessage_desc', $desc);
+            $render = true;
+        }
+
+        // if (filter_var($background_url, FILTER_VALIDATE_URL)) {
+        //     $this->context->smarty->assign('prestacustommessage_bg', $background_url);
+        // } elseif (!empty($background_url) && !preg_match("~^(?:f|ht)tps?://~i", $background_url)) {
+        //     $background_url = "http://" . $background_url;
+        //     $this->context->smarty->assign('prestacustommessage_bg', $background_url);
+        // }
+
+        if (!empty($background_color)) {
+            $this->context->smarty->assign('PRESTACUSTOMBANNER_BG_COLOR', $background_color);
+        }
+
+        if ($render) {
+            return $this->display(__FILE__, 'views/templates/prestacustommessage.tpl');
+        }
+
+        return 'Error: You should fill one of the inputs in backoffice.';
     }
 }
