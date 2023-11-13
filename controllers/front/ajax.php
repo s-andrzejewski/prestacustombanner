@@ -39,6 +39,6 @@ class PrestaCustomMessageAjaxModuleFrontController extends ModuleFrontController
         header('Content-Type: application/json');
         $json = Tools::jsonEncode($response);
         echo $json;
-        die;
+        exit;
     }
 }
