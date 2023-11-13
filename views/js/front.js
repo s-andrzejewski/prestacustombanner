@@ -27,14 +27,9 @@
 */
 
 document.addEventListener("DOMContentLoaded", () => {
-    const ajaxBtn = document.querySelector('.presta-custom-message__ajax-btn');
     const container = document.querySelector('.presta-custom-message__ajax-response');
-
-    if( ajaxBtn && container ) {
-        ajaxBtn.addEventListener("click", () => {
-            handleAjax()
-        });
-    }
+    
+    container ? handleAjax() : '';
 })
 
 async function handleAjax() {

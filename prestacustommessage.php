@@ -67,7 +67,6 @@ class PrestaCustomMessage extends Module
         Configuration::updateValue('PRESTACUSTOMMESSAGE_IMAGE', null);
         Configuration::updateValue('PRESTACUSTOMMESSAGE_BUTTON_TEXT', null);
         Configuration::updateValue('PRESTACUSTOMMESSAGE_BUTTON_URL', null);
-        Configuration::updateValue('PRESTACUSTOMMESSAGE_AJAX_BUTTON_TEXT', null);
         Configuration::updateValue('PRESTACUSTOMMESSAGE_AJAX_CONTENT', null);
 
         
@@ -86,7 +85,6 @@ class PrestaCustomMessage extends Module
         Configuration::deleteByName('PRESTACUSTOMMESSAGE_IMAGE');
         Configuration::deleteByName('PRESTACUSTOMMESSAGE_BUTTON_TEXT');
         Configuration::deleteByName('PRESTACUSTOMMESSAGE_BUTTON_URL');
-        Configuration::deleteByName('PRESTACUSTOMMESSAGE_AJAX_BUTTON_TEXT');
         Configuration::deleteByName('PRESTACUSTOMMESSAGE_AJAX_CONTENT');
 
         return parent::uninstall();
@@ -195,12 +193,6 @@ class PrestaCustomMessage extends Module
                         'desc' => $this->l('Enter the URL for the button click action.'),
                     ),
                     array(
-                        'type' => 'text',
-                        'label' => $this->l('Ajax request button label'),
-                        'name' => 'PRESTACUSTOMMESSAGE_AJAX_BUTTON_TEXT',
-                        'desc' => $this->l('Enter the text for the button.'),
-                    ),
-                    array(
                         'row' => 5,
                         'type' => 'textarea',
                         'prefix' => '<i class="fa-solid fa-pen"></i>',
@@ -229,7 +221,6 @@ class PrestaCustomMessage extends Module
             'PRESTACUSTOMMESSAGE_IMAGE' => Configuration::get('PRESTACUSTOMMESSAGE_IMAGE', null),
             'PRESTACUSTOMMESSAGE_BUTTON_TEXT' => Configuration::get('PRESTACUSTOMMESSAGE_BUTTON_TEXT', null),
             'PRESTACUSTOMMESSAGE_BUTTON_URL' => Configuration::get('PRESTACUSTOMMESSAGE_BUTTON_URL', null),
-            'PRESTACUSTOMMESSAGE_AJAX_BUTTON_TEXT' => Configuration::get('PRESTACUSTOMMESSAGE_AJAX_BUTTON_TEXT', null),
             'PRESTACUSTOMMESSAGE_AJAX_CONTENT' => Configuration::get('PRESTACUSTOMMESSAGE_AJAX_CONTENT', null),
             
         );
@@ -304,7 +295,6 @@ class PrestaCustomMessage extends Module
         $image = Configuration::get('PRESTACUSTOMMESSAGE_IMAGE');
         $btn_text = Configuration::get('PRESTACUSTOMMESSAGE_BUTTON_TEXT');
         $btn_url = Configuration::get('PRESTACUSTOMMESSAGE_BUTTON_URL');
-        $ajax_btn_text = Configuration::get('PRESTACUSTOMMESSAGE_AJAX_BUTTON_TEXT');
 
         if (!empty($heading)) {
             $this->context->smarty->assign('prestacustommessage_heading', $heading);
@@ -330,10 +320,6 @@ class PrestaCustomMessage extends Module
 
         if (!empty($btn_url)) {
             $this->context->smarty->assign('prestacustommessage_btn_url', $btn_url);
-        }
-
-        if (!empty($ajax_btn_text)) {
-            $this->context->smarty->assign('prestacustommessage_ajax_btn_txt', $ajax_btn_text);
         }
 
         if ($render) {
