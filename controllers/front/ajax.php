@@ -4,7 +4,6 @@
  * <FileName> => ajax.php
  * Format expected: <ModuleClassName><FileName>ModuleFrontController
  */
-require_once _PS_MODULE_DIR_.'prestacustommessage/prestacustommessage.php';
 
 class PrestaCustomMessageAjaxModuleFrontController extends ModuleFrontController
 {
@@ -12,12 +11,11 @@ class PrestaCustomMessageAjaxModuleFrontController extends ModuleFrontController
     {
         parent::initContent();
         
-        $module = new PrestaCustomMessage;
         $ajax_content = Configuration::get('PRESTACUSTOMMESSAGE_AJAX_CONTENT', null);
 
         if (Tools::isSubmit('action')) {
 
-            $response = array('status' => false, "message" => $module->l('Nothing here.'));
+            $response = array('status' => false, "message" => $this->module->l('Nothing here.'));
 
             switch (Tools::getValue('action')) {
 
@@ -39,6 +37,6 @@ class PrestaCustomMessageAjaxModuleFrontController extends ModuleFrontController
         header('Content-Type: application/json');
         $json = Tools::jsonEncode($response);
         echo $json;
-        exit;
+        die;
     }
 }
