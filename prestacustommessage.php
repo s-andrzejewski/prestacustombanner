@@ -330,13 +330,12 @@ class PrestaCustomMessage extends Module
     }
 
     public function handleAjax() {
-        $link = new Link;
         $parameters = array(
             'action' => 'get_message',
             'ajax' => true,
         );
 
-        $ajax_link = $link->getModuleLink('prestacustommessage', 'ajax', $parameters);
+        $ajax_link = $this->context->link->getModuleLink('prestacustommessage', 'ajax', $parameters);
 
         Media::addJsDef(array(
             'ajax_link' => $ajax_link
