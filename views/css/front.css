@@ -37,6 +37,7 @@
     background: none;
     border: 2px solid #000;
     text-transform: uppercase;
+    text-decoration: none;
     padding: 12px 20px;
     width: fit-content;
     min-width: 200px;
@@ -47,7 +48,8 @@
     z-index: 0;
 }
 
-.presta-custom-message__button:hover {
+.presta-custom-message__button:hover,
+.presta-custom-message__button:focus {
     color: #fff;
 }
 
@@ -66,7 +68,8 @@
     transform: scaleX(0);
 }
 
-.presta-custom-message__button:hover::before {
+.presta-custom-message__button:hover::before,
+.presta-custom-message__button:focus::before {
     transform: scaleX(1);
 }
 
