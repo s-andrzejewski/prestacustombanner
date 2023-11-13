@@ -17,6 +17,14 @@
                 {$prestacustommessage_btn_txt}
             </a>
         {/if}
+
+        {if isset($prestacustommessage_ajax_btn_txt)}
+            <div class="presta-custom-message__button presta-custom-message__ajax-btn">
+                {$prestacustommessage_ajax_btn_txt}
+            </div>
+        {/if}
+
+        <div class="presta-custom-message__ajax-response"></div>
     </div>
 </section>
 
@@ -29,7 +37,8 @@
 
     .presta-custom-message .prestacustommessage__heading,
     .presta-custom-message .prestacustommessage__content,
-    .presta-custom-message__button {
+    .presta-custom-message__button,
+    .presta-custom-message__ajax-response {
         {if isset($prestacustommessage_text_color)}
             color: {$prestacustommessage_text_color};
         {/if}

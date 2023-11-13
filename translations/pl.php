@@ -19,3 +19,6 @@ $_MODULES['prestacustommessage']['Enter the text for the button.'] = 'Wprowadź 
 $_MODULES['prestacustommessage']['Button URL'] = 'Adres URL przycisku';
 $_MODULES['prestacustommessage']['Enter the URL for the button click action.'] = 'Wprowadź adres URL dla akcji kliknięcia przycisku.';
 $_MODULES['prestacustommessage']['Save'] = 'Zapisz';
+$_MODULES['prestacustommessage']['Nothing here.'] = 'Nic tu nie ma.';
+$_MODULES['prestacustommessage']['Ajax request button label'] = 'Etykieta przycisku ładowania treści z AJAXa';
+$_MODULES['prestacustommessage']['Enter content to load from AJAX.'] = 'Wprowadź treść do załadowania przez AJAX.';
