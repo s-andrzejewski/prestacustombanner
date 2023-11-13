@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <module>
-	<name>prestacustombanner</name>
-	<displayName><![CDATA[Custom banner]]></displayName>
+	<name>prestacustommessage</name>
+	<displayName><![CDATA[Banner with Custom Message]]></displayName>
 	<version><![CDATA[1.0.0]]></version>
-	<description><![CDATA[Displays custom banner on homepage.]]></description>
+	<description><![CDATA[Displays banner with custom message on homepage.]]></description>
 	<author><![CDATA[Szymon Andrzejewski]]></author>
 	<tab><![CDATA[front_office_features]]></tab>
 	<is_configurable>1</is_configurable>
