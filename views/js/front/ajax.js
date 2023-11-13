@@ -1,6 +1,5 @@
 const ajaxUrl = ajax_link;
 const data = "action=get_message";
-const xhr = new XMLHttpRequest();
 
 fetch(ajaxUrl, {
     method: "POST",
