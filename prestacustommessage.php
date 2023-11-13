@@ -47,7 +47,7 @@ class PrestaCustomMessage extends Module
 
         parent::__construct();
 
-        $this->displayName = $this->l('Custom banner');
+        $this->displayName = $this->l('Banner with custom message');
         $this->description = $this->l('Displays custom banner on homepage.');
 
         $this->confirmUninstall = $this->l('Are you sure you want to uninstall this module?');
@@ -61,10 +61,14 @@ class PrestaCustomMessage extends Module
      */
     public function install()
     {
-        // Configuration::updateValue('PRESTACUSTOMBANNER_LIVE_MODE', false);
-        Configuration::updateValue('PRESTACUSTOMBANNER_HEADING', null);
-        Configuration::updateValue('PRESTACUSTOMBANNER_DESCRIPTION', null);
-        Configuration::updateValue('PRESTACUSTOMBANNER_BG_COLOR', null);
+        Configuration::updateValue('PRESTACUSTOMMESSAGE_HEADING', null);
+        Configuration::updateValue('PRESTACUSTOMMESSAGE_DESCRIPTION', null);
+        Configuration::updateValue('PRESTACUSTOMMESSAGE_TEXT_COLOR', null);
+        Configuration::updateValue('PRESTACUSTOMMESSAGE_IMAGE', null);
+        Configuration::updateValue('PRESTACUSTOMMESSAGE_BUTTON_TEXT', null);
+        Configuration::updateValue('PRESTACUSTOMMESSAGE_BUTTON_URL', null);
+
+        
 
         return parent::install() &&
             $this->registerHook('header') &&
@@ -74,10 +78,12 @@ class PrestaCustomMessage extends Module
 
     public function uninstall()
     {
-        // Configuration::deleteByName('PRESTACUSTOMBANNER_LIVE_MODE');
-        Configuration::deleteByName('PRESTACUSTOMBANNER_HEADING');
-        Configuration::deleteByName('PRESTACUSTOMBANNER_DESCRIPTION');
-        Configuration::deleteByName('PRESTACUSTOMBANNER_BG_COLOR');
+        Configuration::deleteByName('PRESTACUSTOMMESSAGE_HEADING');
+        Configuration::deleteByName('PRESTACUSTOMMESSAGE_DESCRIPTION');
+        Configuration::deleteByName('PRESTACUSTOMMESSAGE_TEXT_COLOR');
+        Configuration::deleteByName('PRESTACUSTOMMESSAGE_IMAGE');
+        Configuration::deleteByName('PRESTACUSTOMMESSAGE_BUTTON_TEXT');
+        Configuration::deleteByName('PRESTACUSTOMMESSAGE_BUTTON_URL');
 
         return parent::uninstall();
     }
@@ -144,56 +150,46 @@ class PrestaCustomMessage extends Module
                     array(
                         'col' => 2,
                         'type' => 'text',
-                        // <i class="fa-solid fa-heading"></i>
                         'prefix' => '<i class="fa-solid fa-heading"></i>',
                         'desc' => $this->l('Enter a heading text for the message.'),
-                        'name' => 'PRESTACUSTOMBANNER_HEADING',
+                        'name' => 'PRESTACUSTOMMESSAGE_HEADING',
                         'label' => $this->l('Heading'),
                     ),
                     array(
-                        // 'col' => 8,
                         'row' => 5,
                         'type' => 'textarea',
-                        // <i class="fa-solid fa-pen"></i>
                         'prefix' => '<i class="fa-solid fa-pen"></i>',
-                        'desc' => $this->l('Enter message\'s content.'),
-                        'name' => 'PRESTACUSTOMBANNER_DESCRIPTION',
+                        'desc' => $this->l('Enter banner\'s content.'),
+                        'name' => 'PRESTACUSTOMMESSAGE_DESCRIPTION',
                         'label' => $this->l('Description'),
                         'autoload_rte' => true,
                     ),
-                    // Select
                     array(
-                        'type' => 'select',
-                        'label' => $this->l('Choose background color:'),
-                        'name' => 'PRESTACUSTOMBANNER_BG_COLOR',
-                        'required' => true,
-                        'options' => array(
-                        'query' => $id_bg_colors = array(
-                            array(
-                                'id_bg_colors' => 1,
-                                'name' => 'transparent',
-                                'value' => null
-                            ),
-                            array(
-                                'id_bg_colors' => 2,
-                                'name' => 'red',
-                                'value' => '#FF0000'
-                            ),
-                            array(
-                                'id_bg_colors' => 3,
-                                'name' => 'yellow',
-                                'value' => '#FFFF00'
-                            ),  
-                            array(
-                                'id_bg_colors' => 4,
-                                'name' => 'green',
-                                'value' => '#0f0'
-                            ),                                        
-                        ),
-                        'id' => 'id_bg_colors',
-                        'name' => 'name'
-                        )
+                        'col' => 2,
+                        'type' => 'text',
+                        'prefix' => '',
+                        'desc' => $this->l('Enter color code for text (hex or rgba).'),
+                        'name' => 'PRESTACUSTOMMESSAGE_TEXT_COLOR',
+                        'label' => $this->l('Font color:'),
                     ),
+                    array(
+                        'type' => 'file',
+                        'label' => $this->l('Upload image'),
+                        'name' => 'PRESTACUSTOMMESSAGE_IMAGE',
+                        'desc' => $this->l('Upload an image for the custom banner.'),
+                    ),
+                    array(
+                        'type' => 'text',
+                        'label' => $this->l('Button text'),
+                        'name' => 'PRESTACUSTOMMESSAGE_BUTTON_TEXT',
+                        'desc' => $this->l('Enter the text for the button.'),
+                    ),
+                    array(
+                        'type' => 'text',
+                        'label' => $this->l('Button URL'),
+                        'name' => 'PRESTACUSTOMMESSAGE_BUTTON_URL',
+                        'desc' => $this->l('Enter the URL for the button click action.'),
+                    )
                 ),
                 'submit' => array(
                     'title' => $this->l('Save'),
@@ -208,9 +204,12 @@ class PrestaCustomMessage extends Module
     protected function getConfigFormValues()
     {
         return array(
-            'PRESTACUSTOMBANNER_HEADING' => Configuration::get('PRESTACUSTOMBANNER_HEADING', null),
-            'PRESTACUSTOMBANNER_DESCRIPTION' => Configuration::get('PRESTACUSTOMBANNER_DESCRIPTION', null),
-            'PRESTACUSTOMBANNER_BG_COLOR' => Configuration::get('PRESTACUSTOMBANNER_BG_COLOR', null),
+            'PRESTACUSTOMMESSAGE_HEADING' => Configuration::get('PRESTACUSTOMMESSAGE_HEADING', null),
+            'PRESTACUSTOMMESSAGE_DESCRIPTION' => Configuration::get('PRESTACUSTOMMESSAGE_DESCRIPTION', null),
+            'PRESTACUSTOMMESSAGE_TEXT_COLOR' => Configuration::get('PRESTACUSTOMMESSAGE_TEXT_COLOR', null),
+            'PRESTACUSTOMMESSAGE_IMAGE' => Configuration::get('PRESTACUSTOMMESSAGE_IMAGE', null),
+            'PRESTACUSTOMMESSAGE_BUTTON_TEXT' => Configuration::get('PRESTACUSTOMMESSAGE_BUTTON_TEXT', null),
+            'PRESTACUSTOMMESSAGE_BUTTON_URL' => Configuration::get('PRESTACUSTOMMESSAGE_BUTTON_URL', null),
         );
     }
 
@@ -220,10 +219,37 @@ class PrestaCustomMessage extends Module
     protected function postProcess()
     {
         $form_values = $this->getConfigFormValues();
-
+    
         foreach (array_keys($form_values) as $key) {
-            Configuration::updateValue($key, Tools::getValue($key));
+            if ($key === 'PRESTACUSTOMMESSAGE_IMAGE') {
+                // Handle image upload and save the file path
+                if (!empty($_FILES[$key]['name'])) {
+                    $image_path = $this->uploadImage($_FILES[$key]);
+                    Configuration::updateValue($key, $image_path);
+                }
+            } else {
+                Configuration::updateValue($key, Tools::getValue($key));
+            }
         }
+    }
+    
+    private function uploadImage($file)
+    {
+        // Define the target directory where images will be uploaded
+        $upload_dir = _PS_MODULE_DIR_ . $this->name . '/views/img/';
+    
+        // Generate a unique filename for the uploaded image
+        $file_name = uniqid() . '_' . $file['name'];
+    
+        // Set the full path to the uploaded image
+        $target_file = $upload_dir . $file_name;
+    
+        // Check if the file was uploaded successfully
+        if (move_uploaded_file($file['tmp_name'], $target_file)) {
+            return $this->_path . 'views/img/' . $file_name;
+        }
+    
+        return null;
     }
 
     /**
@@ -249,9 +275,12 @@ class PrestaCustomMessage extends Module
     public function hookDisplayHome()
     {
         $render = false;
-        $heading = Configuration::get('PRESTACUSTOMBANNER_HEADING');
-        $desc = Configuration::get('PRESTACUSTOMBANNER_DESCRIPTION');
-        $background_color = Configuration::get('PRESTACUSTOMBANNER_BG_COLOR');
+        $heading = Configuration::get('PRESTACUSTOMMESSAGE_HEADING');
+        $desc = Configuration::get('PRESTACUSTOMMESSAGE_DESCRIPTION');
+        $text_color = Configuration::get('PRESTACUSTOMMESSAGE_TEXT_COLOR');
+        $image = Configuration::get('PRESTACUSTOMMESSAGE_IMAGE');
+        $btn_text = Configuration::get('PRESTACUSTOMMESSAGE_BUTTON_TEXT');
+        $btn_url = Configuration::get('PRESTACUSTOMMESSAGE_BUTTON_URL');
 
         if (!empty($heading)) {
             $this->context->smarty->assign('prestacustommessage_heading', $heading);
@@ -263,21 +292,26 @@ class PrestaCustomMessage extends Module
             $render = true;
         }
 
-        // if (filter_var($background_url, FILTER_VALIDATE_URL)) {
-        //     $this->context->smarty->assign('prestacustommessage_bg', $background_url);
-        // } elseif (!empty($background_url) && !preg_match("~^(?:f|ht)tps?://~i", $background_url)) {
-        //     $background_url = "http://" . $background_url;
-        //     $this->context->smarty->assign('prestacustommessage_bg', $background_url);
-        // }
+        if (!empty($text_color)) {
+            $this->context->smarty->assign('prestacustommessage_text_color', $text_color);
+        }
 
-        if (!empty($background_color)) {
-            $this->context->smarty->assign('PRESTACUSTOMBANNER_BG_COLOR', $background_color);
+        if (!empty($image)) {
+            $this->context->smarty->assign('prestacustommessage_img', $image);
+        }
+
+        if (!empty($btn_text)) {
+            $this->context->smarty->assign('prestacustommessage_btn_txt', $btn_text);
+        }
+
+        if (!empty($btn_url)) {
+            $this->context->smarty->assign('prestacustommessage_btn_url', $btn_url);
         }
 
         if ($render) {
             return $this->display(__FILE__, 'views/templates/prestacustommessage.tpl');
         }
 
-        return 'Error: You should fill one of the inputs in backoffice.';
+        return '';
     }
 }
