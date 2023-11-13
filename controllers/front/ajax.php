@@ -1,12 +1,10 @@
 <?php
-
-require_once _PS_MODULE_DIR_.'prestacustommessage/prestacustommessage.php';
-
 /**
  * <ModuleClassName> => PrestaCustomMessage
  * <FileName> => ajax.php
  * Format expected: <ModuleClassName><FileName>ModuleFrontController
  */
+require_once _PS_MODULE_DIR_.'prestacustommessage/prestacustommessage.php';
 
 class PrestaCustomMessageAjaxModuleFrontController extends ModuleFrontController
 {
