@@ -67,6 +67,7 @@ class PrestaCustomMessage extends Module
         Configuration::updateValue('PRESTACUSTOMMESSAGE_IMAGE', null);
         Configuration::updateValue('PRESTACUSTOMMESSAGE_BUTTON_TEXT', null);
         Configuration::updateValue('PRESTACUSTOMMESSAGE_BUTTON_URL', null);
+        Configuration::updateValue('PRESTACUSTOMMESSAGE_AJAX_CONTENT', null);
 
         
 
@@ -84,6 +85,7 @@ class PrestaCustomMessage extends Module
         Configuration::deleteByName('PRESTACUSTOMMESSAGE_IMAGE');
         Configuration::deleteByName('PRESTACUSTOMMESSAGE_BUTTON_TEXT');
         Configuration::deleteByName('PRESTACUSTOMMESSAGE_BUTTON_URL');
+        Configuration::deleteByName('PRESTACUSTOMMESSAGE_AJAX_CONTENT');
 
         return parent::uninstall();
     }
@@ -189,7 +191,16 @@ class PrestaCustomMessage extends Module
                         'label' => $this->l('Button URL'),
                         'name' => 'PRESTACUSTOMMESSAGE_BUTTON_URL',
                         'desc' => $this->l('Enter the URL for the button click action.'),
-                    )
+                    ),
+                    array(
+                        'row' => 5,
+                        'type' => 'textarea',
+                        'prefix' => '<i class="fa-solid fa-pen"></i>',
+                        'desc' => $this->l('Enter content to load from AJAX.'),
+                        'name' => 'PRESTACUSTOMMESSAGE_AJAX_CONTENT',
+                        'label' => $this->l('AJAX'),
+                        'autoload_rte' => true,
+                    ),
                 ),
                 'submit' => array(
                     'title' => $this->l('Save'),
@@ -210,6 +221,8 @@ class PrestaCustomMessage extends Module
             'PRESTACUSTOMMESSAGE_IMAGE' => Configuration::get('PRESTACUSTOMMESSAGE_IMAGE', null),
             'PRESTACUSTOMMESSAGE_BUTTON_TEXT' => Configuration::get('PRESTACUSTOMMESSAGE_BUTTON_TEXT', null),
             'PRESTACUSTOMMESSAGE_BUTTON_URL' => Configuration::get('PRESTACUSTOMMESSAGE_BUTTON_URL', null),
+            'PRESTACUSTOMMESSAGE_AJAX_CONTENT' => Configuration::get('PRESTACUSTOMMESSAGE_AJAX_CONTENT', null),
+            
         );
     }
 
@@ -268,8 +281,9 @@ class PrestaCustomMessage extends Module
      */
     public function hookHeader()
     {
-        $this->context->controller->addJS($this->_path.'/views/js/front.js');
-        $this->context->controller->addCSS($this->_path.'/views/css/front.css');
+        $this->context->controller->addJS($this->_path.'views/js/front.js');
+        $this->context->controller->addCSS($this->_path.'views/css/front.css');
+        $this->handleAjax();
     }
 
     public function hookDisplayHome()
@@ -313,5 +327,18 @@ class PrestaCustomMessage extends Module
         }
 
         return '';
+    }
+
+    public function handleAjax() {
+        $parameters = array(
+            'action' => 'get_message',
+            'ajax' => true,
+        );
+
+        $ajax_link = $this->context->link->getModuleLink('prestacustommessage', 'ajax', $parameters);
+
+        Media::addJsDef(array(
+            'ajax_link' => $ajax_link
+        ));
     }
 }
